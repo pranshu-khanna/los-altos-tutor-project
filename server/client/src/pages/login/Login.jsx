@@ -1,3 +1,4 @@
+import React from "react";
 import "./login.scss";
 import {Link, useNavigate} from "react-router-dom";
 import {useContext, useState} from "react";
@@ -32,7 +33,7 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="left">
-          <h1>Hello World.</h1>
+          <h1>Tutoring Platform.</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero cum,
             alias totam numquam ipsa exercitationem dignissimos, error nam,

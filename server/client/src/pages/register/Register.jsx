@@ -1,3 +1,4 @@
+import React from "react";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import "./register.scss";
@@ -50,7 +51,7 @@ const Register = () => {
             <input type="password" placeholder="Password" name="password" onChange={handleChange}/>
             <input type="text" placeholder="Name" name="name" onChange={handleChange}/>
             {err && err}
-            <button onClick={handleClick}>Register</button>
+            <button onClick={handleClick}>Continue</button>
           </form>
         </div>
       </div>

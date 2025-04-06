@@ -18,6 +18,10 @@
     .input-wrapper {
       position: relative;
 
+      label {
+        color: #888;
+      }
+
       input {
         border: none;
         border-bottom: 1px solid lightgray;
@@ -76,7 +80,7 @@
       }
 
       .select__placeholder {
-        color: black;
+        color: #888;
       }
 
       .select__indicator-separator {

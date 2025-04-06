@@ -32,7 +32,7 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="left">
-          <h1>Hello World.</h1>
+          <h1>Upskill-Me.</h1>
           <p>Personalized course discovery and seamless tutor matching — all in one place.</p>
           <span>Don't you have an account?</span>
           <Link to ="/register">

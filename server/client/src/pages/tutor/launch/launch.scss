@@ -1,66 +1,88 @@
 @import "../../../style.scss";
 
 .launch-class-page {
-  @include themify($themes) {
-    padding: 40px;
-    max-width: 500px;
-    margin: auto;
-    background-color: themed("bg");
-    color: themed("textColor");
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: themed("primary");
-    }
-
-    form {
+    @include themify($themes) {
+      padding: 40px;
+      min-height: 100vh;
+      box-sizing: border-box;
+  
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-
-      label {
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 5px;
-      }
-
-      input, select, textarea {
-        padding: 10px;
-        font-size: 14px;
-        border-radius: 6px;
-        border: 1px solid themed("border");
-        background-color: themed("inputBg");
+      justify-content: center;
+      overflow-y: auto;
+  
+      .form-container {
+        width: 100%;
+        max-width: 500px;
+        background-color: themed("bg");
         color: themed("textColor");
-      }
-
-      input:focus, select:focus {
-        outline: none;
-        border-color: themed("primary");
-      }
-
-      .error {
-        color: red;
-        font-size: 14px;
-        margin-top: -10px;
-      }
-
-      button {
-        padding: 12px;
-        font-size: 15px;
-        background-color: themed("primary");
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: darken(themed("primary"), 10%);
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+  
+        h2 {
+          text-align: center;
+          margin-bottom: 20px;
+          color: themed("primary");
+        }
+  
+        form {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+  
+          label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+          }
+  
+          input,
+          select,
+          textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+          }
+  
+          input:focus,
+          select:focus {
+            outline: none;
+            border-color: themed("primary");
+          }
+  
+          .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+          }
+  
+          button {
+            padding: 12px;
+            font-size: 15px;
+            background-color: themed("primary");
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+  
+            &:hover {
+              background-color: darken(themed("primary"), 10%);
+            }
+          }
+        }
+  
+        .error {
+          color: red;
+          font-weight: 500;
         }
       }
     }
   }
-}
+  

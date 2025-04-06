@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import classRoutes from "./routes/classes.js";
 
 const app = express();
 app.use((req, res, next) => {
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/classes", classRoutes);
 
 app.listen(8800, () => {
     console.log("API working!");

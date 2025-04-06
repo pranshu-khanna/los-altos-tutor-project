@@ -25,8 +25,7 @@ import {AuthContext} from "./context/authContext.js";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 function App() {
-  // const {currentUser} = useContext(AuthContext);
-  // const {currentUser} = useContext(true);
+  const {currentUser} = useContext(AuthContext);
   const {darkMode} = useContext(DarkModeContext);
   const queryClient = new QueryClient();
 
@@ -35,23 +34,21 @@ function App() {
       <QueryClientProvider client={queryClient}>
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
         <NavBar/>
-        <div style={{display: "flex"}}>
-          <LeftBar/>
-          <div style = {{flex:6, width: "100%"}}>
-            <Outlet/>
-          </div>
+        <div style={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+          <LeftBar />
+        <div style={{ flex: 6, height: "100%", overflowY: "auto" }}>
+          <Outlet />
         </div>
+</div>
       </div>
       </QueryClientProvider>
     );
   }
 
   const ProtectedRoute = ({children}) => {
-    /*
     if (!currentUser) {
       return <Navigate to ="/login"/>
     };
-    */
 
     return children;
   }

@@ -21,7 +21,6 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/classes", classRoutes);
-
 app.listen(8800, () => {
     console.log("API working!");
 });

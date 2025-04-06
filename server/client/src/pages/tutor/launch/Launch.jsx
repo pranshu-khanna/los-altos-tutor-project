@@ -100,12 +100,12 @@ const Launch = () => {
             tutorId: currentUser.id,
             frequency,
             startDate,
+            endDate,
             startTime,
+            endTime,
             classSize: parseInt(classSize),
             subject,
-            numberOfLectures: parseInt(numberOfLectures),
-            endDate,
-            endTime,
+            numberOfLectures: parseInt(numberOfLectures)
         });
       navigate("/classes");
     } catch (err) {

@@ -1,5 +1,5 @@
 import express from "express";
-import {launchClass} from "../controllers/classes.js"; 
+import {launchClass} from "../controllers/class.js"; 
 
 const router = express.Router();
 

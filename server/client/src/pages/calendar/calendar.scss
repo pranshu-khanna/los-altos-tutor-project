@@ -1,0 +1,103 @@
+.calendar-container {
+  width: 90%;
+  height: 90%;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  user-select: none;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+  }
+
+  button {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #555;
+    cursor: pointer;
+    padding: 4px 12px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+}
+
+.days-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  .day-name {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    color: #888;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+
+  .week {
+    display: flex;
+  }
+
+  .cell {
+    flex: 1;
+    height: 80px;
+    text-align: center;
+    padding-top: 10px;
+    border: 1px solid #eee;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease;
+
+    span {
+      font-size: 16px;
+      color: #444;
+    }
+
+    &.disabled span {
+      color: #ccc;
+    }
+
+    &.selected {
+      background-color: #d4cbff;
+      border-color: #a89eff;
+    }
+
+    &.today {
+      border: 2px solid #938eef;
+    }
+
+    &:hover {
+      background-color: #f6f6f6;
+    }
+  }
+}
+
+.selected-date {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}

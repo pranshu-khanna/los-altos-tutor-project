@@ -11,7 +11,6 @@ const Search = () => {
   const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
-    // Fetch suggestions based on student's interests
     const fetchSuggestions = async () => {
       if (!currentUser?.studentSubjects?.length) return;
       try {
@@ -20,7 +19,6 @@ const Search = () => {
             axios.get(`http://localhost:8800/api/classes/search/${subject}`)
           )
         );
-        // Flatten the array of arrays
         const merged = suggestions.flatMap((res) => res.data);
         setSuggested(merged);
       } catch (err) {

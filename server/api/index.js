@@ -2,10 +2,9 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.js";
-import userRoutes from "./routes/users.js";
 import classRoutes from "./routes/classes.js";
 import postRoutes from "./routes/posts.js";
-import enrollRoutes from "./routes/enroll.js";
+import enrollRoutes from "./routes/enrollment.js";
 
 const app = express();
 app.use((req, res, next) => {
@@ -20,7 +19,6 @@ app.use(cors(
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/classes", classRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/enroll", enrollRoutes);

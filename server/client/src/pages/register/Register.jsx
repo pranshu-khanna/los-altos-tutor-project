@@ -5,15 +5,15 @@ import axios from "axios";
 import Select from "react-select";
 
 const subjectOptions = [
-  { value: "math", label: "Math" },
-  { value: "english", label: "English" },
-  { value: "spanish", label: "Spanish" },
-  { value: "history", label: "History" },
-  { value: "robotics", label: "Robotics" },
-  { value: "science", label: "Science" },
-  { value: "physics", label: "Physics" },
-  { value: "art", label: "Art" },
-  { value: "programming", label: "Programming" },
+  {value: "math", label: "Math" },
+  {value: "english", label: "English"},
+  {value: "spanish", label: "Spanish"},
+  {value: "history", label: "History"},
+  {value: "robotics", label: "Robotics"},
+  {value: "science", label: "Science"},
+  {value: "physics", label: "Physics"},
+  {value: "art", label: "Art"},
+  {value: "programming", label: "Programming"},
 ];
 
 const Register = () => {
@@ -90,13 +90,16 @@ const Register = () => {
       setErr(error);
       return;
     }
-
+  
+    const subjectList = selectedSubjects.map((subject) => subject.value);
+    const userFormData = {
+      ...inputs,
+      role,
+      studentSubjects: role === "student" ? subjectList : null,
+      tutorSubjects: role === "tutor" ? subjectList : null,
+    };
     try {
-      await axios.post("http://localhost:8800/api/auth/register", {
-        ...inputs,
-        role,
-        interests: selectedSubjects.map((subject) => subject.value),
-      });
+      await axios.post("http://localhost:8800/api/auth/register", userFormData);
     } catch (err) {
       setErr(err.response?.data || "Registration failed");
     }

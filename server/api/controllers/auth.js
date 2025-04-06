@@ -11,8 +11,8 @@ export const register = (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
-    const studentSubjects = req.body.role === "student" ? JSON.stringify(req.body.subjects) : null;
-    const tutorSubjects = req.body.role === "tutor" ? JSON.stringify(req.body.subjects) : null;
+    const studentSubjects = req.body.studentSubjects?.join(",") || null;
+    const tutorSubjects = req.body.tutorSubjects?.join(",") || null;
 
     const q = "INSERT INTO users (`role`, `username`, `name`, `email`, `password`, `studentSubjects`, `tutorSubjects`) VALUE (?)";
     const values = [req.body.role, req.body.username, req.body.name, req.body.email, hashedPassword, studentSubjects, tutorSubjects];

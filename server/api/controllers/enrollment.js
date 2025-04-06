@@ -4,10 +4,27 @@ export const enroll = (req, res) => {
   const { studentId, classId } = req.body;
   const enrollmentDate = new Date();
 
-  const q = "INSERT INTO enrolledStudents (studentId, classId, enrollmentDate) VALUES (?, ?, ?)";
+  const checkQ = `
+    SELECT * FROM enrolledStudents 
+    WHERE studentId = ? AND classId = ?
+  `;
 
-  db.query(q, [studentId, classId, enrollmentDate], (err, result) => {
-    if (err) return res.status(500).json(err);
-    res.status(200).json({ success: true, message: "Enrolled successfully!" });
+  db.query(checkQ, [studentId, classId], (checkErr, checkData) => {
+    if (checkErr) return res.status(500).json(checkErr);
+
+    if (checkData.length > 0) {
+      return res.status(400).json({ success: false, message: "Already enrolled in this class." });
+    }
+
+    const insertQ = `
+      INSERT INTO enrolledStudents (studentId, classId, enrollmentDate) 
+      VALUES (?, ?, ?)
+    `;
+
+    db.query(insertQ, [studentId, classId, enrollmentDate], (insertErr, insertResult) => {
+      if (insertErr) return res.status(500).json(insertErr);
+
+      res.status(200).json({ success: true, message: "Enrolled successfully!" });
+    });
   });
 };

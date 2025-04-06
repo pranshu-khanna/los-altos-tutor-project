@@ -14,9 +14,9 @@ export const register = (req, res) => {
     const studentSubjects = req.body.studentSubjects?.join(",") || null;
     const tutorSubjects = req.body.tutorSubjects?.join(",") || null;
 
-    const q = "INSERT INTO users (`role`, `username`, `name`, `email`, `password`, `studentSubjects`, `tutorSubjects`) VALUE (?)";
+    const insertQ = "INSERT INTO users (`role`, `username`, `name`, `email`, `password`, `studentSubjects`, `tutorSubjects`) VALUES (?)";
     const values = [req.body.role, req.body.username, req.body.name, req.body.email, hashedPassword, studentSubjects, tutorSubjects];
-    db.query(q, [values], (err, data) => {
+    db.query(insertQ, [values], (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json("User successfully created.");
     });

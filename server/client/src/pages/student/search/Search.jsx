@@ -1,67 +1,35 @@
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../../context/authContext";
 import axios from "axios";
 import "./search.scss";
 
-const subjects = [
-  {value:"math",label:"Math"},
-  {value:"english",label:"English"},
-  {value:"spanish",label:"Spanish"},
-  {value:"history",label:"History"},
-  {value:"robotics",label:"Robotics"},
-  {value:"science",label:"Science"},
-  {value:"physics",label:"Physics"},
-  {value:"art",label:"Art"},
-  {value:"programming",label:"Programming"},
-  {value:"literature",label:"Literature"},
-  {value:"music",label:"Music"},
-  {value:"business",label:"Business"},
-  {value:"psychology",label:"Psychology"},
-  {value:"geography",label:"Geography"},
-  {value:"economics",label:"Economics"},
-  {value:"health",label:"Health"},
-  {value:"chemistry",label:"Chemistry"},
-  {value:"biology",label:"Biology"},
-  {value:"statistics",label:"Statistics"},
-  {value:"philosophy",label:"Philosophy"},
-  {value:"engineering",label:"Engineering"},
-  {value:"design",label:"Design"},
-  {value:"web-development",label:"Web Development"},
-  {value:"data-science",label:"Data Science"},
-  {value:"finance",label:"Finance"},
-  {value:"marketing",label:"Marketing"},
-  {value:"law",label:"Law"},
-  {value:"environmental-science",label:"Environmental Science"},
-  {value:"sociology",label:"Sociology"},
-  {value:"astronomy",label:"Astronomy"},
-  {value:"photonics",label:"Photonics"},
-  {value:"nanotechnology",label:"Nanotechnology"},
-  {value:"cryptography",label:"Cryptography"},
-  {value:"game-design",label:"Game Design"},
-  {value:"astrophysics",label:"Astrophysics"},
-  {value:"linguistics",label:"Linguistics"},
-  {value:"cybersecurity",label:"Cybersecurity"},
-  {value:"animation",label:"Animation"},
-  {value:"machine-learning",label:"Machine Learning"},
-  {value:"genetics",label:"Genetics"},
-  {value:"oceanography",label:"Oceanography"},
-  {value:"archaeology",label:"Archaeology"},
-  {value:"urban-planning",label:"Urban Planning"},
-  {value:"ethics",label:"Ethics"},
-  {value:"biotechnology",label:"Biotechnology"},
-  {value:"quantum-computing",label:"Quantum Computing"},
-  {value:"paleontology",label:"Paleontology"},
-  {value:"sports-science",label:"Sports Science"},
-  {value:"meteorology",label:"Meteorology"},
-  {value:"other",label:"Other"},
-];
-
 const Search = () => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [results, setResults] = useState([]);
+  const [suggested, setSuggested] = useState([]);
   const [enrolledClasses, setEnrolledClasses] = useState([]);
   const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    // Fetch suggestions based on student's interests
+    const fetchSuggestions = async () => {
+      if (!currentUser?.studentSubjects?.length) return;
+      try {
+        const suggestions = await Promise.all(
+          currentUser.studentSubjects.map((subject) =>
+            axios.get(`http://localhost:8800/api/classes/search/${subject}`)
+          )
+        );
+        // Flatten the array of arrays
+        const merged = suggestions.flatMap((res) => res.data);
+        setSuggested(merged);
+      } catch (err) {
+        console.error("Failed to load suggested classes:", err);
+      }
+    };
+
+    fetchSuggestions();
+  }, [currentUser]);
 
   const handleEnroll = async (classId) => {
     try {
@@ -70,6 +38,7 @@ const Search = () => {
         classId,
       });
       alert("Enrolled successfully!");
+      setEnrolledClasses((prev) => [...prev, classId]);
     } catch (err) {
       console.error("Enrollment failed:", err);
     }
@@ -78,7 +47,9 @@ const Search = () => {
   const handleSearch = async () => {
     if (!selectedSubject) return;
     try {
-      const res = await axios.get(`http://localhost:8800/api/classes/search/${selectedSubject}`);
+      const res = await axios.get(
+        `http://localhost:8800/api/classes/search/${selectedSubject}`
+      );
       setResults(res.data);
     } catch (err) {
       console.error("Error fetching search results:", err);
@@ -90,12 +61,35 @@ const Search = () => {
       <div className="search-form">
         <select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
           <option value="">Select a subject</option>
-          {subjects.map((subject, idx) => (
-            <option value={subject.value} key={idx}>{subject.label}</option>
+          {currentUser.studentSubjects?.map((subj, i) => (
+            <option value={subj} key={i}>
+              {subj[0].toUpperCase() + subj.slice(1)}
+            </option>
           ))}
         </select>
         <button onClick={handleSearch}>Choose</button>
       </div>
+
+      {suggested.length > 0 && (
+        <div className="suggested-section">
+          <h2>Suggested for You</h2>
+          {suggested.map((cls) => (
+            <div className="card" key={cls.classId}>
+              <h2>{cls.subject}</h2>
+              <p>Instructor: {cls.name}</p>
+              <p>Start Date: {cls.startDate}</p>
+              <p>Frequency: {cls.frequency}</p>
+              <p>Class Size: {cls.classSize}</p>
+              <button
+                onClick={() => handleEnroll(cls.classId)}
+                disabled={enrolledClasses.includes(cls.classId)}
+              >
+                {enrolledClasses.includes(cls.classId) ? "Enrolled" : "Enroll"}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="results">
         {results.map((cls) => (

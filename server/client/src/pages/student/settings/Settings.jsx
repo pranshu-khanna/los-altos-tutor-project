@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./settings.scss";
 
 const Settings = () => {
@@ -8,9 +8,7 @@ const Settings = () => {
     { id: "account", label: "Account" },
     { id: "privacy", label: "Privacy & Security" },
     { id: "notifications", label: "Notifications" },
-    { id: "appearance", label: "Appearance" },
     { id: "language", label: "Language & Region" },
-    { id: "billing", label: "Billing" },
   ];
 
   return (
@@ -78,20 +76,6 @@ const Settings = () => {
           </div>
         )}
 
-        {activeTab === "appearance" && (
-          <div>
-            <h3>Appearance</h3>
-            <label>
-              Theme
-              <select>
-                <option>Light</option>
-                <option>Dark</option>
-                <option>System Default</option>
-              </select>
-            </label>
-          </div>
-        )}
-
         {activeTab === "language" && (
           <div>
             <h3>Language & Region</h3>
@@ -111,14 +95,6 @@ const Settings = () => {
                 <option>EST</option>
               </select>
             </label>
-          </div>
-        )}
-
-        {activeTab === "billing" && (
-          <div>
-            <h3>Billing</h3>
-            <p>No payment method added.</p>
-            <button>Add Payment Method</button>
           </div>
         )}
       </main>

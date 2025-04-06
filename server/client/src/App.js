@@ -3,7 +3,8 @@ import Register from "./pages/register/Register.jsx";
 import NavBar from "./components/navBar/NavBar.jsx";
 import LeftBar from "./components/leftBar/LeftBar.jsx";
 import Calendar from "./pages/calendar/Calendar.jsx";
-import Settings from "./pages/settings/Settings.jsx";
+import StudentSettings from "./pages/student/settings/Settings.jsx";
+import StudentHome from "./pages/student/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import React from "react";
 import "./style.scss";
@@ -32,7 +33,7 @@ function App() {
         <NavBar/>
         <div style={{display: "flex"}}>
           <LeftBar/>
-          <div style = {{flex:6}}>
+          <div style = {{flex:6, width: "100%"}}>
             <Outlet/>
           </div>
         </div>
@@ -57,12 +58,16 @@ function App() {
       element: <ProtectedRoute><Layout/></ProtectedRoute>,
       children: [
           {
+            path: "/",
+            element: <StudentHome/>
+          },
+          {
             path: "/calendar",
             element: <Calendar/>
           },
           {
             path: "/settings",
-            element: <Settings/>
+            element: <StudentSettings/>
           },
           {
             path: "/profile/:id",

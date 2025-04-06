@@ -1,96 +1,145 @@
-import React, { useState } from "react";
-import {
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  addDays,
-  addMonths,
-  subMonths,
-  format,
-  isSameMonth,
-  isSameDay,
-} from "date-fns";
+import React, { useState, useEffect, useRef } from "react";
 import "./calendar.scss";
 
+const assignments = [
+  {
+    id: 1,
+    date: "2025-04-10",
+    class: "Math",
+    title: "Algebra Homework",
+    description: "Complete questions 1–10 on page 42."
+  },
+  {
+    id: 2,
+    date: "2025-04-12",
+    class: "History",
+    title: "Civil War Essay",
+    description: "Write a 500-word essay on the causes of the Civil War."
+  },
+  {
+    id: 3,
+    date: "2025-04-18",
+    class: "English",
+    title: "Poetry Reading",
+    description: "Read chapters 5–7 of 'Leaves of Grass'."
+  }
+];
+
 const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [hoveredAssignment, setHoveredAssignment] = useState(null);
+  const tooltipRef = useRef();
 
-  const header = () => (
-    <div className="calendar-header">
-      <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
-        &#60;
-      </button>
-      <h2>{format(currentMonth, "MMMM yyyy")}</h2>
-      <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
-        &#62;
-      </button>
-    </div>
-  );
+  const getDaysInMonth = (year, month) =>
+    new Date(year, month + 1, 0).getDate();
 
-  const daysOfWeek = () => {
-    const days = [];
-    const startDate = startOfWeek(currentMonth);
+  const renderDays = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const daysInMonth = getDaysInMonth(year, month);
+    const firstDay = new Date(year, month, 1).getDay();
 
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div className="day-name" key={i}>
-          {format(addDays(startDate, i), "EEE")}
-        </div>
+    const daysArray = [];
+
+    for (let i = 0; i < firstDay; i++) {
+      daysArray.push(<div className="day empty" key={`empty-${i}`} />);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const fullDate = new Date(year, month, day).toISOString().split("T")[0];
+      const dayAssignments = assignments.filter(a => a.date === fullDate);
+
+      daysArray.push(
+        <button
+          className={`day ${selectedDate === fullDate ? "selected" : ""}`}
+          key={day}
+          onClick={() => setSelectedDate(fullDate)}
+        >
+          <div className="day-number">{day}</div>
+          {dayAssignments.map((assignment) => (
+            <div
+              className="assignment"
+              key={assignment.id}
+              onMouseEnter={(e) =>
+                setHoveredAssignment({
+                  ...assignment,
+                  x: e.clientX,
+                  y: e.clientY
+                })
+              }
+              onMouseLeave={() => setHoveredAssignment(null)}
+            >
+              {assignment.title}
+            </div>
+          ))}
+        </button>
       );
     }
 
-    return <div className="days-row">{days}</div>;
+    return daysArray;
   };
 
-  const cells = () => {
-    const monthStart = startOfMonth(currentMonth);
-    const monthEnd = endOfMonth(monthStart);
-    const startDate = startOfWeek(monthStart);
-    const endDate = endOfWeek(monthEnd);
+  const goToPreviousMonth = () => {
+    const prevMonth = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+    setCurrentDate(new Date(prevMonth));
+  };
 
-    const rows = [];
-    let days = [];
-    let day = startDate;
+  const goToNextMonth = () => {
+    const nextMonth = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+    setCurrentDate(new Date(nextMonth));
+  };
 
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        const cloneDay = day;
-        days.push(
-          <div
-            className={`cell ${
-              !isSameMonth(day, monthStart) ? "disabled" : ""
-            } ${isSameDay(day, selectedDate) ? "selected" : ""} ${
-              isSameDay(day, new Date()) ? "today" : ""
-            }`}
-            key={day}
-            onClick={() => setSelectedDate(cloneDay)}
-          >
-            <span>{format(day, "d")}</span>
-          </div>
-        );
-        day = addDays(day, 1);
+  useEffect(() => {
+    if (hoveredAssignment && tooltipRef.current) {
+      const { innerWidth, innerHeight } = window;
+      const tooltip = tooltipRef.current;
+      const tooltipWidth = tooltip.offsetWidth;
+      const tooltipHeight = tooltip.offsetHeight;
+      let x = hoveredAssignment.x + 15;
+      let y = hoveredAssignment.y + 15;
+
+      if (x + tooltipWidth > innerWidth) {
+        x = hoveredAssignment.x - tooltipWidth - 15;
       }
-      rows.push(
-        <div className="week" key={day}>
-          {days}
-        </div>
-      );
-      days = [];
-    }
+      if (y + tooltipHeight > innerHeight) {
+        y = hoveredAssignment.y - tooltipHeight - 15;
+      }
 
-    return <div className="body">{rows}</div>;
-  };
+      tooltip.style.left = `${x}px`;
+      tooltip.style.top = `${y}px`;
+    }
+  }, [hoveredAssignment]);
 
   return (
     <div className="calendar-container">
-      <div className="selected-date">
-        {format(selectedDate, "EEEE, MMMM d, yyyy")}
+      <div className="calendar-header">
+        <button onClick={goToPreviousMonth}>←</button>
+        <h2>
+          {currentDate.toLocaleString("default", { month: "long" })}{" "}
+          {currentDate.getFullYear()}
+        </h2>
+        <button onClick={goToNextMonth}>→</button>
       </div>
-      {header()}
-      {daysOfWeek()}
-      {cells()}
+
+      <div className="selected-date-display">
+        {selectedDate ? `Selected Date: ${selectedDate}` : "Click a day to select it"}
+      </div>
+
+      <div className="calendar-grid">
+        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
+          <div className="weekday" key={day}>{day}</div>
+        ))}
+        {renderDays()}
+      </div>
+
+      {hoveredAssignment && (
+        <div className="tooltip" ref={tooltipRef}>
+          <strong>{hoveredAssignment.title}</strong>
+          <p><b>Class:</b> {hoveredAssignment.class}</p>
+          <p>{hoveredAssignment.description}</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,6 +6,10 @@ $themes: (
     bgSoft: #f6f3f3,
     textColorSoft: #555,
     border: lightgray,
+    cardBg: #fff,
+    accent: #e0d7ff,
+    accentHover: #c6bfff,
+    primary: #6c5ce7,
   ),
   dark: (
     textColor: whitesmoke,
@@ -14,6 +18,10 @@ $themes: (
     bgSoft: #333,
     textColorSoft: lightgray,
     border: #444,
+    cardBg: #2a2a2a,
+    accent: #5e54a4,
+    accentHover: #766bcc,
+    primary: #a29bfe,
   ),
 );
 
@@ -49,4 +57,10 @@ $themes: (
     @media (max-width: 960px) {
       @content;
     }
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }

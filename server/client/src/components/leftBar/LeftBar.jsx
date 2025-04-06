@@ -5,7 +5,7 @@ import Calendar from "../../assets/calendar.png";
 import Class from "../../assets/class.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandCircleDown';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AuthContext } from "../../context/authContext";

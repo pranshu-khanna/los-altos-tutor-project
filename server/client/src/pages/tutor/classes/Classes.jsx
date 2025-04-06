@@ -30,19 +30,21 @@ const Classes = () => {
         <div
           className="card"
           key={cls.classId}
-          style={{ backgroundColor: "#7e57c2" }} // Optional: Customize based on subject
+          style={{ backgroundColor: "#7e57c2", cursor: "pointer" }}
           onClick={() => navigate(`/classes/${cls.classId}`)}
         >
           <h2>{capitalize(cls.subject)}</h2>
-          <span className="code">Instructor: {cls.name}</span>
+          <span className="code">
+            Instructor: {cls.name ? cls.name : "Unknown"}
+          </span>
           <div className="info">
-            <p>Start Date: {cls.startDate}</p>
-            <p>End Date: {cls.endDate}</p>
-            <p>Start Time: {cls.startTime}</p>
-            <p>End Time: {cls.endTime}</p>
-            <p>Frequency: {cls.frequency}</p>
-            <p>Class Size: {cls.classSize}</p>
-            <p>Lectures: {cls.numberOfLectures}</p>
+            <p><strong>Start Date:</strong> {cls.startDate || "TBD"}</p>
+            <p><strong>End Date:</strong> {cls.endDate || "TBD"}</p>
+            <p><strong>Start Time:</strong> {cls.startTime || "TBD"}</p>
+            <p><strong>End Time:</strong> {cls.endTime || "TBD"}</p>
+            <p><strong>Frequency:</strong> {capitalize(cls.frequency)}</p>
+            <p><strong>Class Size:</strong> {cls.classSize}</p>
+            <p><strong>Lectures:</strong> {cls.numberOfLectures}</p>
           </div>
         </div>
       ))}

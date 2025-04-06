@@ -8,6 +8,7 @@ import TutorSettings from "./pages/tutor/settings/Settings.jsx";
 import StudentClasses from "./pages/student/classes/Classes.jsx";
 import TutorClasses from "./pages/tutor/classes/Classes.jsx";
 import LaunchClass from "./pages/tutor/launch/Launch.jsx";
+import ClassDetails from "./pages/tutor/class/ClassDetails.jsx";
 import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import React from "react";
@@ -81,6 +82,10 @@ function App() {
           {
             path: "/launch",
             element: <LaunchClass/>
+          },
+          {
+            path: "/class:classId",
+            element: <ClassDetails/>
           }
       ]
     },

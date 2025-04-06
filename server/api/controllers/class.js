@@ -38,5 +38,16 @@ export const launchClass = (req, res) => {
       }
       return res.status(200).json("Class launched successfully.");
     });
-  };
-  
+};
+
+export const getClass = (req, res) => {
+  const tutorId = req.params.tutorId;
+  const q = ` SELECT c.*, u.name FROM classesOffered AS c 
+              JOIN users AS u ON c.tutorId = u.id
+              WHERE c.tutorId = ?`;
+
+  db.query(q, [tutorId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
+  });
+};

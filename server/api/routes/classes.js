@@ -1,8 +1,9 @@
 import express from "express";
-import {launchClass} from "../controllers/class.js"; 
+import {launchClass, getClass} from "../controllers/class.js"; 
 
 const router = express.Router();
 
 router.post("/", launchClass); 
+router.get("/:tutorId", getClass);
 
 export default router;

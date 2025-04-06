@@ -3,6 +3,7 @@ import Register from "./pages/register/Register.jsx";
 import NavBar from "./components/navBar/NavBar.jsx";
 import LeftBar from "./components/leftBar/LeftBar.jsx";
 import Calendar from "./pages/calendar/Calendar.jsx";
+import Settings from "./pages/settings/Settings.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import React from "react";
 import "./style.scss";
@@ -58,6 +59,10 @@ function App() {
           {
             path: "/calendar",
             element: <Calendar/>
+          },
+          {
+            path: "/settings",
+            element: <Settings/>
           },
           {
             path: "/profile/:id",

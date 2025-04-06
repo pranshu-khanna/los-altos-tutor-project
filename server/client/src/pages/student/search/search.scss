@@ -1,0 +1,42 @@
+@import "../../../style.scss";
+
+.search-page {
+  padding: 30px;
+
+  .search-form {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+
+    select {
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #7e57c2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #6a47b3;
+      }
+    }
+  }
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .card {
+      background-color: #f3e5f5;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  }
+}

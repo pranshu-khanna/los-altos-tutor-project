@@ -51,3 +51,17 @@ export const getClass = (req, res) => {
     return res.status(200).json(data);
   });
 };
+
+export const searchClass = (req, res) => {
+  const subject = req.params.subject;
+  const q = `
+    SELECT c.*, u.name FROM classesOffered c 
+    JOIN users u ON c.tutorId = u.id
+    WHERE c.subject = ?
+  `;
+
+  db.query(q, [subject], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json(data);
+  });
+};

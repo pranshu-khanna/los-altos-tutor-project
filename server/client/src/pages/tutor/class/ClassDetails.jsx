@@ -3,38 +3,43 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./classDetails.scss";
 
-const ClassDetail = () => {
+const ClassDetails = () => {
   const { classId } = useParams();
   const [classInfo, setClassInfo] = useState(null);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // In future, fetch posts from DB
-    setPosts([]);
-  }, [classId]);
-
-  useEffect(() => {
     const fetchClass = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8800/api/classes/${classId}`);
-        setClassInfo(res.data[0]); // assuming backend returns array
-      } catch (err) {
-        console.error("Error fetching class info:", err);
-      }
+      const res = await axios.get(`http://localhost:8800/api/classes/${classId}`);
+      setClassInfo(res.data[0]);
     };
+    const fetchPosts = async () => {
+      const res = await axios.get(`http://localhost:8800/api/posts/${classId}`);
+      setPosts(res.data);
+    };
+
     fetchClass();
+    fetchPosts();
   }, [classId]);
 
-  const handlePost = (e) => {
+  const handlePost = async (e) => {
     e.preventDefault();
-    const content = e.target.elements.content.value;
-    const image = e.target.elements.image.files[0];
-    const newPost = {
-      content,
-      image: image ? URL.createObjectURL(image) : null,
-    };
-    setPosts((prev) => [...prev, newPost]);
-    e.target.reset();
+    const formData = new FormData(e.target);
+    formData.append("classId", classId);
+
+    const res = await axios.post("http://localhost:8800/api/posts", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (res.status === 201) {
+      const newPost = {
+        content: formData.get("content"),
+        imageUrl: res.data.imageUrl || null,
+        dueDate: formData.get("dueDate"),
+      };
+      setPosts((prev) => [...prev, newPost]);
+      e.target.reset();
+    }
   };
 
   if (!classInfo) return <div>Loading...</div>;
@@ -47,8 +52,9 @@ const ClassDetail = () => {
       </div>
 
       <form onSubmit={handlePost} className="post-form">
-        <textarea name="content" placeholder="Announce something to your class..." />
+        <textarea name="content" placeholder="Announce something to your class..." required />
         <input type="file" name="image" accept="image/*" />
+        <input type="date" name="dueDate" />
         <button type="submit">Post</button>
       </form>
 
@@ -56,7 +62,8 @@ const ClassDetail = () => {
         {posts.map((post, index) => (
           <div className="post" key={index}>
             <p>{post.content}</p>
-            {post.image && <img src={post.image} alt="Uploaded" />}
+            {post.imageUrl && <img src={`http://localhost:8800${post.imageUrl}`} alt="Uploaded" />}
+            {post.dueDate && <p className="due">Due: {post.dueDate}</p>}
           </div>
         ))}
       </div>
@@ -64,4 +71,4 @@ const ClassDetail = () => {
   );
 };
 
-export default ClassDetail;
+export default ClassDetails;

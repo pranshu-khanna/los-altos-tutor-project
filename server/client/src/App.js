@@ -3,9 +3,9 @@ import Register from "./pages/register/Register.jsx";
 import NavBar from "./components/navBar/NavBar.jsx";
 import LeftBar from "./components/leftBar/LeftBar.jsx";
 import Calendar from "./pages/calendar/Calendar.jsx";
-import StudentSettings from "./pages/student/settings/Settings.jsx";
-import TutorSettings from "./pages/tutor/settings/Settings.jsx";
+import Settings from "./pages/settings/Settings.jsx";
 import StudentClasses from "./pages/student/classes/Classes.jsx";
+import Search from "./pages/student/search/Search.jsx"
 import TutorClasses from "./pages/tutor/classes/Classes.jsx";
 import LaunchClass from "./pages/tutor/launch/Launch.jsx";
 import ClassDetails from "./pages/tutor/class/ClassDetails.jsx";
@@ -64,12 +64,16 @@ function App() {
             element: <Home/>
           },
           {
+            path: "/search",
+            element: <Search/>
+          },
+          {
             path: "/calendar",
             element: <Calendar/>
           },
           {
             path: "/settings",
-            element: <StudentSettings/>
+            element: <Settings/>
           },
           {
             path: "/profile/:id",
@@ -84,9 +88,9 @@ function App() {
             element: <LaunchClass/>
           },
           {
-            path: "/class:classId",
+            path: "/class/:classId",
             element: <ClassDetails/>
-          }
+          },
       ]
     },
     {

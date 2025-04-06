@@ -29,7 +29,8 @@
       border: 1px solid #ccc;
     }
 
-    input[type="file"] {
+    input[type="file"],
+    input[type="date"] {
       color: #333;
     }
 
@@ -53,6 +54,13 @@
       padding: 10px;
       border-radius: 8px;
       margin-top: 10px;
+
+      .due {
+        font-style: italic;
+        color: #666;
+        font-size: 14px;
+        margin-top: 5px;
+      }
 
       img {
         margin-top: 10px;

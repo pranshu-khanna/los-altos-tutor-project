@@ -70,7 +70,7 @@ const Launch = () => {
     });
 
   const [error, setError] = useState(null);
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -94,8 +94,18 @@ const Launch = () => {
         setError("Please fill out all fields.");
         return;
       }
-
-    try {
+      console.log("Submitting class with:", {
+        tutorId: currentUser?.id,
+        frequency,
+        startDate,
+        endDate,
+        startTime,
+        endTime,
+        classSize,
+        subject,
+        numberOfLectures
+      });    
+      try {
         await axios.post("http://localhost:8800/api/classes", {
             tutorId: currentUser.id,
             frequency,
@@ -155,7 +165,7 @@ const Launch = () => {
 
                 {error && <p className="error">{error}</p>}
 
-                <button type="submit">Create Class</button>
+                <button type="submit">Launch Class</button>
             </form>
         </div>
     </div>

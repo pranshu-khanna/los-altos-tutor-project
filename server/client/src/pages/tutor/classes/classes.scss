@@ -1,0 +1,86 @@
+@import "../../../style.scss";
+
+.classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  flex: 1 1 300px;
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    margin-bottom: 5px;
+  }
+
+  .code {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    opacity: 0.85;
+  }
+
+  .post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+
+    textarea {
+      resize: none;
+      height: 60px;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    input[type="file"] {
+      color: white;
+    }
+
+    button {
+      align-self: flex-start;
+      padding: 6px 12px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+
+  .posts {
+    margin-top: 15px;
+
+    .post {
+      background: rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+
+      p {
+        margin: 0;
+      }
+
+      img {
+        margin-top: 8px;
+        max-width: 100%;
+        border-radius: 6px;
+      }
+    }
+  }
+}

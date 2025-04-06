@@ -5,6 +5,7 @@ import axios from "axios";
 import Calendar from "../../assets/calendar.png";
 import Class from "../../assets/class.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate} from "react-router-dom";
@@ -42,10 +43,21 @@ const LeftBar = () => {
           </div>
 
           <div className="item">
-            <Link to="/search" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "15px" }}>
-              <SearchOutlinedIcon />
-              <span>Find Classes</span>
-            </Link>
+            {isStudent ? (
+              <div className="item">
+                <Link to="/search" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "15px" }}>
+                  <SearchOutlinedIcon />
+                  <span>Find Classes</span>
+                </Link>
+              </div>
+            ) : (
+              <div className="item">
+                <Link to="/launch" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "15px" }}>
+                  <AddIcon/>
+                  <span>Launch Class</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 

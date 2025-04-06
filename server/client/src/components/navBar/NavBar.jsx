@@ -21,7 +21,7 @@ const NavBar = () => {
           <div className="right">
             <div className="user">
               <img alt=""/>
-              <span>John Doe</span>
+              <span>{currentUser.name}</span>
             </div>
           </div>
         </div>

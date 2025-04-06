@@ -4,7 +4,10 @@ import NavBar from "./components/navBar/NavBar.jsx";
 import LeftBar from "./components/leftBar/LeftBar.jsx";
 import Calendar from "./pages/calendar/Calendar.jsx";
 import StudentSettings from "./pages/student/settings/Settings.jsx";
-import StudentHome from "./pages/student/home/Home.jsx";
+import TutorSettings from "./pages/tutor/settings/Settings.jsx";
+import StudentClasses from "./pages/student/classes/Classes.jsx";
+import TutorClasses from "./pages/tutor/classes/Classes.jsx";
+import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import React from "react";
 import "./style.scss";
@@ -59,7 +62,7 @@ function App() {
       children: [
           {
             path: "/",
-            element: <StudentHome/>
+            element: <Home/>
           },
           {
             path: "/calendar",
@@ -72,6 +75,10 @@ function App() {
           {
             path: "/profile/:id",
             element: <Profile/>
+          },
+          {
+            path: "/classes",
+            element: <TutorClasses/>
           }
       ]
     },

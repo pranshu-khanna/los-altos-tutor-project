@@ -1,7 +1,7 @@
 import "./leftBar.scss";
 import React, {useContext} from "react";
 import {Link} from "react-router-dom";
-import Calendar from "../../assets/6.png";
+import Calendar from "../../assets/calendar.png";
 import Class from "../../assets/class.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SettingsIcon from '@mui/icons-material/Settings';

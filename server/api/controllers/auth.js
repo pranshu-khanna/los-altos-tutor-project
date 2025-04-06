@@ -29,27 +29,28 @@ export const login = (req, res) => {
         if (err) return res.status(500).json(err);
         if (data.length === 0) return res.status(404).json("User not found");
 
-    const user = data[0];
-    const checkPassword = bcrypt.compareSync(req.body.password, user.password);
-    if (!checkPassword) return res.status(400).json("Wrong password or username!");
+        const user = data[0];
+        const checkPassword = bcrypt.compareSync(req.body.password, user.password);
+        if (!checkPassword) return res.status(400).json("Wrong password or username!");
 
-    const token = jwt.sign({id: user.id, role: user.role}, "secretKey");
+        const token = jwt.sign({ id: user.id, role: user.role }, "secretKey");
 
-    const parsedUser = {
-        ...user,
-        studentSubjects: user.studentSubjects ? JSON.parse(user.studentSubjects) : null,
-        tutorSubjects: user.tutorSubjects ? JSON.parse(user.tutorSubjects) : null,
-    };
-    const {password, ...others} = parsedUser;
+        const parsedUser = {
+            ...user,
+            studentSubjects: user.studentSubjects ? user.studentSubjects.split(",") : null,
+            tutorSubjects: user.tutorSubjects ? user.tutorSubjects.split(",") : null,
+        };
 
-    res.cookie("accessToken", token, {
-        httpOnly: true,
-        sameSite: "Lax",
-        secure: process.env.NODE_ENV === "production",
-    })
-    .status(200)
-    .json(others);
-});
+        const {password, ...others} = parsedUser;
+
+        res.cookie("accessToken", token, {
+            httpOnly: true,
+            sameSite: "Lax",
+            secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json(others);
+    });
 };
 
 export const logout = (req, res) => {

@@ -2,6 +2,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./register.scss";
 import axios from "axios";
+import Select from "react-select";
+
+const subjectOptions = [
+  { value: "math", label: "Math" },
+  { value: "english", label: "English" },
+  { value: "spanish", label: "Spanish" },
+  { value: "history", label: "History" },
+  { value: "robotics", label: "Robotics" },
+  { value: "science", label: "Science" },
+  { value: "physics", label: "Physics" },
+  { value: "art", label: "Art" },
+  { value: "programming", label: "Programming" },
+];
 
 const Register = () => {
   const [step, setStep] = useState(1);
@@ -14,43 +27,50 @@ const Register = () => {
     interests: "",
     availability: "",
   });
-
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [err, setErr] = useState(null);
   const [validationErrors, setValidationErrors] = useState({});
 
   const handleChange = (event) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
-  
+
     setValidationErrors((prevInputs) => {
-      const updated = {...prevInputs, [name]: false};
+      const updated = { ...prevInputs, [name]: false };
       const hasRemainingErrors = Object.entries(updated).some(([key, value]) => value);
       if (!hasRemainingErrors) setErr(null);
       return updated;
     });
-  };  
+  };
+
+  const handleSubjectChange = (selectedOptions) => {
+    setSelectedSubjects(selectedOptions);
+    if (selectedOptions.length > 0) {
+      setValidationErrors((prev) => ({ ...prev, interests: false }));
+    }
+  };
 
   const validateStepOne = () => {
     const newErrors = {};
     if (!role) newErrors.role = true;
-  
     setValidationErrors(newErrors);
     return Object.keys(newErrors).length === 0 ? null : "Please select a role.";
-  };  
+  };
 
   const validateStepTwo = () => {
-    const {username, email, password, name} = inputs;
+    const { username, email, password, name } = inputs;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const newErrors = {};
-  
+
     if (!username) newErrors.username = true;
     if (!email || !emailRegex.test(email)) newErrors.email = true;
     if (!password) newErrors.password = true;
     if (!name) newErrors.name = true;
-  
+    if (selectedSubjects.length === 0) newErrors.interests = true;
+
     setValidationErrors(newErrors);
     return Object.keys(newErrors).length === 0 ? null : "Please fill out all fields correctly.";
-  };  
+  };
 
   const handleContinue = (event) => {
     event.preventDefault();
@@ -62,7 +82,7 @@ const Register = () => {
       setStep(2);
     }
   };
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const error = validateStepTwo();
@@ -70,23 +90,24 @@ const Register = () => {
       setErr(error);
       return;
     }
-  
+
     try {
       await axios.post("http://localhost:8800/api/auth/register", {
         ...inputs,
         role,
+        interests: selectedSubjects.map((subject) => subject.value),
       });
     } catch (err) {
       setErr(err.response?.data || "Registration failed");
     }
-  };  
+  };
 
   const handleBack = (event) => {
     event.preventDefault();
     setErr(null);
     setValidationErrors({});
     setStep(1);
-  };  
+  };
 
   return (
     <div className="register">
@@ -116,12 +137,7 @@ const Register = () => {
                         checked={role === "student"}
                         onChange={() => {
                           setRole("student");
-                          setValidationErrors((prev) => {
-                            const updated = { ...prev, role: false };
-                            const hasRemainingErrors = Object.values(updated).some((v) => v);
-                            if (!hasRemainingErrors) setErr(null);
-                            return updated;
-                          });
+                          setValidationErrors((prev) => ({ ...prev, role: false }));
                         }}
                       />
                       Student
@@ -134,12 +150,7 @@ const Register = () => {
                         checked={role === "tutor"}
                         onChange={() => {
                           setRole("tutor");
-                          setValidationErrors((prev) => {
-                            const updated = { ...prev, role: false };
-                            const hasRemainingErrors = Object.values(updated).some((v) => v);
-                            if (!hasRemainingErrors) setErr(null);
-                            return updated;
-                          });
+                          setValidationErrors((prev) => ({ ...prev, role: false }));
                         }}
                       />
                       Tutor
@@ -198,17 +209,27 @@ const Register = () => {
                   />
                   {validationErrors.name && <span className="exclam">!</span>}
                 </div>
+
                 <div className="input-wrapper">
-                  <input
-                    type="text"
-                    placeholder={role}
-                    disabled
-                    value={role}
-                    className="read-only-input"
+                  <label>
+                    {role === "student"
+                      ? "What subjects are you interested in learning?"
+                      : "What subjects are you interested in teaching?"}
+                  </label>
+                  <Select
+                    isMulti
+                    name="interests"
+                    options={subjectOptions}
+                    classNamePrefix="select"
+                    onChange={handleSubjectChange}
+                    value={selectedSubjects}
+                    placeholder="Type to search subjects..."
                   />
+                  {validationErrors.interests && <span className="exclam">!</span>}
                 </div>
+
                 {err && <span className="error">{err}</span>}
-                <div style={{display: "flex", gap: "10px"}}>
+                <div style={{ display: "flex", gap: "10px" }}>
                   <button onClick={handleBack}>Back</button>
                   <button onClick={handleSubmit}>Submit</button>
                 </div>

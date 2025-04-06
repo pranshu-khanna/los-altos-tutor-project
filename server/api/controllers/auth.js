@@ -54,8 +54,9 @@ export const login = (req, res) => {
 
 export const logout = (req, res) => {
     res.clearCookie("accessToken", {
-        secure: true,
-        sameSite: "none"
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     })
-    .status(200).json("User has successfully logged out.");
-};
+    .status(200)
+    .json("User has successfully logged out.");
+  };  

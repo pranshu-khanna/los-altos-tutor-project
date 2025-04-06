@@ -1,26 +1,21 @@
 import "./leftBar.scss";
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {useContext, useState} from "react";
+import {Link} from "react-router-dom";
+import axios from "axios";
 import Calendar from "../../assets/calendar.png";
 import Class from "../../assets/class.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { AuthContext } from "../../context/authContext";
+import {AuthContext} from "../../context/authContext";
 
 const LeftBar = () => {
   const {currentUser} = useContext(AuthContext);
-  const [classesExpanded, setClassesExpanded] = useState(false);
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const dummyClasses = [
-    "math",
-    "english",
-    "spanish",
-    "history",
-    "robotics",
-  ];
+  const isStudent = currentUser?.role === "student";
+  const classSectionTitle = isStudent ? "My Classes" : "Classes You Teach";
 
   return (
     <div className="leftBar">
@@ -28,35 +23,16 @@ const LeftBar = () => {
         <div className="menu">
           <div className="item">
             <Link to="/calendar" style={{textDecoration: "none", display: "flex", alignItems: "center", gap: "15px"}}>
-              <img src={Calendar} alt="Calendar Icon" />
+              <img src={Calendar} alt="Calendar Icon"/>
               <span>My Calendar</span>
             </Link>
           </div>
-          <div className="item" onClick={() => setClassesExpanded(!classesExpanded)} style={{cursor: "pointer"}}>
-            <div style={{display: "flex", alignItems: "center", gap: "15px"}}>
+          <div className="item" style={{cursor: "pointer"}}>
+            <Link to="/classes" style={{textDecoration: "none", display: "flex", alignItems: "center", gap: "15px"}}>
               <img src={Class} alt="Classes Icon" />
               <span>My Classes</span>
-              {classesExpanded ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
-            </div>
+            </Link>
           </div>
-
-          {classesExpanded && (
-            <div className="class-list">
-              {dummyClasses.map((cls) => (
-                <Link
-                  to={`/${cls.toLowerCase()}`}
-                  key={cls}
-                  style={{
-                    textDecoration: "none",
-                    marginLeft: "45px",
-                    color: "inherit",
-                  }}
-                >
-                  <div className="subclass-item">{cls.charAt(0).toUpperCase() + cls.slice(1)}</div>
-                </Link>
-              ))}
-            </div>
-          )}
 
           <div className="item">
             <Link to="/search" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "15px" }}>

@@ -7,15 +7,22 @@ import Class from "../../assets/class.png";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
+import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/authContext";
 
 const LeftBar = () => {
-  const {currentUser} = useContext(AuthContext);
+  const {currentUser, logout} = useContext(AuthContext);
+  const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const isStudent = currentUser?.role === "student";
   const classSectionTitle = isStudent ? "My Classes" : "Classes You Teach";
+
+  const handleLogout = async () => {
+      await logout();
+      navigate("/login");
+  };
 
   return (
     <div className="leftBar">
@@ -52,10 +59,8 @@ const LeftBar = () => {
             </Link>
           </div>
           <div className="item">
-            <Link to ="/logout" style={{textDecoration: "none", display: "flex", alignItems: "center", gap: "15px"}}>
-              <LogoutIcon />
-              <span>Logout</span>
-            </Link>
+            <LogoutIcon/>
+            <button type="button" onClick={handleLogout}>Logout</button>          
           </div>
         </div>
       </div>

@@ -4,21 +4,19 @@ import React, {useContext} from "react";
 
 const Home = () => {
   const {currentUser} = useContext(AuthContext);
-
-  let message = "";
-
-  if (currentUser?.role === "student") {
-    message = "Discover personalized courses, match with expert tutors, and take control of your learning journey — all in one place.";
-  } else {
-    message = "Share your expertise, manage your classes, and empower students with personalized support — all in one place.";
-  }
+  const isStudent = currentUser?.role === "student";
 
   return (
-    <div className="home">
+    <div className={`home ${isStudent ? "student" : "tutor"}`}>
       <div className="overlay">
         <div className="text-container">
           <h1>Welcome to Upskill-Me</h1>
-          <p>{message}</p>
+          <p>
+            {isStudent
+              ? "Discover personalized courses, match with expert tutors, and take control of your learning journey — all in one place."
+              : "Share your expertise, manage your classes, and empower students with personalized support — all in one place."
+            }
+          </p>
         </div>
       </div>
     </div>
